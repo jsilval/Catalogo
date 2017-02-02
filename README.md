@@ -7,4 +7,4 @@ This Android project has the following characteristics:
 
 * Cache system for view content in offline mode
 
-EXTRA: Android transitions y animations.
+EXTRA: Android transitions and animations.
