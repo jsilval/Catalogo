@@ -10,7 +10,7 @@ This Android project has the following characteristics:
 EXTRA: Android transitions and animations.
 
 # Picasso Library
-http://square.github.io/picasso/
+* http://square.github.io/picasso/
 
 # Retrofit Library
-https://square.github.io/retrofit/
+* https://square.github.io/retrofit/
