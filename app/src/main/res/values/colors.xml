@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#856969</color>
+    <color name="colorPrimaryDark">#856969</color>
+    <color name="colorAccent">#ffffff</color>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="background_splash">#8c7777</color>
+    <color name="background_activity">#E7E7E7</color>
+
+    <color name="light_blue_100">#B3E5FC</color>
+    <color name="light_blue_300">#4FC3F7</color>
+    <color name="light_blue_500">#03A9F4</color>
+    <color name="light_blue_900">#01579B</color>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="4dp"
+        android:layout_marginTop="15dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/shape"
+            android:id="@+id/imgColor"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Social Networking"
+            android:gravity="center_vertical"
+            android:textSize="22sp"
+            android:textStyle="normal|bold"
+            android:paddingLeft="5dp"
+            android:paddingStart="5dp"
+            android:id="@+id/tvCategory"/>
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
