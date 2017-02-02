@@ -120,7 +120,6 @@ public class Categorias extends AppCompatActivity implements View.OnClickListene
         Log.d("onFailure", t.toString());
         DBOperations dbOperations = new DBOperations(getBaseContext());
         list_entry = dbOperations.getEntryFromCache();
-        Log.d("OlO", String.valueOf(list_entry.get(0).getImImage().size()));
 
         ArrayList<String> categories = getAllCategories();
         addItemsToCategories(categories);
