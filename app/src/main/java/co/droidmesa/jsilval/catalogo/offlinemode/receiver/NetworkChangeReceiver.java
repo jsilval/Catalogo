@@ -10,6 +10,7 @@ import android.util.Log;
 
 /**
  * Created by jsilval on 31/01/17.
+ * Broadcast local para escuchar los cambios de red en el dispositivo
  */
 
 public class NetworkChangeReceiver extends BroadcastReceiver{

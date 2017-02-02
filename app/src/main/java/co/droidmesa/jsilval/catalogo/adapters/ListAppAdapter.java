@@ -24,13 +24,12 @@ import co.droidmesa.jsilval.catalogo.utils.SetUpActivity;
 
 /**
  * Created by jsilval on 29/01/17.
+ * Adaptador personalizado para la lista de aplicaciones disponibles
  */
-
 public class ListAppAdapter extends RecyclerView.Adapter<ListAppAdapter.mViewHolder> implements View.OnClickListener{
     private ArrayList<Entry> listItems;
     private View.OnClickListener listener;
     private Context context;
-    private int lastPosition = -1;
 
     public ListAppAdapter(ArrayList<Entry> listItems, Context context) {
         this.listItems = listItems;

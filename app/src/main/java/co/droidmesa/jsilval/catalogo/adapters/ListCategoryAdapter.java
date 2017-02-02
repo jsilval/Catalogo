@@ -19,8 +19,8 @@ import co.droidmesa.jsilval.catalogo.R;
 
 /**
  * Created by jsilval on 29/01/17.
+ * Adaptador personalizado para la lista de categorias disponibles
  */
-
 public class ListCategoryAdapter extends RecyclerView.Adapter<ListCategoryAdapter.mViewHolder> implements View.OnClickListener{
     private ArrayList<String> listItems;
     private View.OnClickListener listener;

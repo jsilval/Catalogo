@@ -31,12 +31,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Vista que muestra las diferentes categorias
+ */
 
 public class Categorias extends AppCompatActivity implements View.OnClickListener, Callback<Catalogo> {
     private RecyclerView rvCategories;
-    private List<Entry> list_entry;
-    public static boolean isNetworkAvailable;
-    public static boolean portrait;
+    private List<Entry> list_entry;                 // lista de aplicaciones
+    public static boolean isNetworkAvailable;       // inidcador del estado de la red
+    public static boolean portrait;                 // inidicador de la orientacion del telefono o tablet
+                                                    // usado para definir el layout de esta vista (menu estilo grid o menu vertical)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,24 +48,30 @@ public class Categorias extends AppCompatActivity implements View.OnClickListene
         setContentView(R.layout.activity_categorias);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // determinar la orientacion de la actividad
         portrait = SetUpActivity.setOrientation(this);
 
         rvCategories = (RecyclerView)findViewById(R.id.rvCategory);
         rvCategories.addItemDecoration(new RecyclerDecoration(this));
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.sample_animation);
-        rvCategories.setAnimation(animation);
         rvCategories.setHasFixedSize(true);
 
+        // definir el estilo del menu
         if (portrait)
             rvCategories.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         else
             rvCategories.setLayoutManager(new GridLayoutManager(this, 3));
 
+        // enviar peticion al servidor
         ApiService.getInstance().sendRequest(this);
-
+        // definir animaciones para esta actividad (para versiones >= android 21)
         SetUpActivity.setupWindowAnimation(this, Constants.CATEGORY_ACTIVITY);
     }
 
+    /**
+     * Obtener todas las categrorias, descartando las que esten duplicadas dentro de list_entry
+     * @return lista de categorias disponible.
+     */
     private ArrayList<String> getAllCategories() {
         Set<String> tmp_set =  new HashSet<>();
         for (Entry entry : list_entry)
@@ -70,6 +80,10 @@ public class Categorias extends AppCompatActivity implements View.OnClickListene
         return new ArrayList<>(tmp_set);
     }
 
+    /**
+     * Añadir la lista de categorias al adaptador que sera puesto dentro del recyclerview
+     * @param set lista de categorias
+     */
     private void addItemsToCategories(ArrayList<String> set) {
         ListCategoryAdapter mAdapter = new ListCategoryAdapter(set);
         rvCategories.setAdapter(mAdapter);
@@ -81,6 +95,12 @@ public class Categorias extends AppCompatActivity implements View.OnClickListene
         viewAppListActivity(v);
     }
 
+    /**
+     * Manejar la respuesta del servidor y obtener los atributos del JSON.
+     * Añadir elementos a la lista.
+     * @param call
+     * @param response respuesta del servidor
+     */
     @Override
     public void onResponse(Call<Catalogo> call, Response<Catalogo> response) {
         list_entry = response.body().getFeed().getEntry();
@@ -89,6 +109,12 @@ public class Categorias extends AppCompatActivity implements View.OnClickListene
         ApiService.getInstance().createCache(list_entry, this);
     }
 
+    /**
+     * Usar el cache si no hay respuesta del servidor.
+     * Añadir elementos a la lista.
+     * @param call
+     * @param t
+     */
     @Override
     public void onFailure(Call<Catalogo> call, Throwable t) {
         Log.d("onFailure", t.toString());
@@ -99,7 +125,10 @@ public class Categorias extends AppCompatActivity implements View.OnClickListene
         ArrayList<String> categories = getAllCategories();
         addItemsToCategories(categories);
     }
-
+    /**
+     * Dispara la vista que muestra las aplicaciones que hacen parte de una categoria
+     * @param v
+     */
     private void viewAppListActivity(View v) {
         TextView tv = (TextView) v.findViewById(R.id.tvCategory);
         Intent i = new Intent(Categorias.this, AppList.class);
@@ -113,6 +142,10 @@ public class Categorias extends AppCompatActivity implements View.OnClickListene
         }
     }
 
+    /**
+     * Sobre escribir la animacion  de salida de la aplicacion, para versiones menores a android 21
+     * @param intent
+     */
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);

@@ -8,11 +8,12 @@ import android.util.Log;
 
 /**
  * Created by jsilval on 29/01/17.
+ * Ayudante para la creacion de la base de datos que almacena el cache
  */
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    //Datos de la base de datos
+    //Nombre de la base de datos
     private static final String DB_NAME = "topfreeapp.db";
 
     //Número de versión del esquema
@@ -23,7 +24,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Nombre de la tabla que se va a crear en la base de datos
     public static final String ENTRY_TABLE = "entry";
-
+    // columnas de la tabla
     public static final String C_NAME = "name";
     public static final String C_SUMMARY = "summary";
     public static final String C_PRICE = "price";
@@ -83,7 +84,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table if exists " + CATEGORY_TABLE);
         db.execSQL("drop table if exists " + ENTRY_TABLE);
         onCreate(db); // ejecuta el método onCreate para crear la nueva base de datos.
     }

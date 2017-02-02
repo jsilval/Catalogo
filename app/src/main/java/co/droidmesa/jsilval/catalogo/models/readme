@@ -1,0 +1,2 @@
+Modelos de clases que representan la respuesta del servidor, generados del JSONObject que brinda
+el servicio https://itunes.apple.com/us/rss/topfreeapplications/limit=20/json

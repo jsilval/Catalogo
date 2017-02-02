@@ -27,13 +27,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Activity que muestra el detalle de cada item seleccionado de una lista
+ */
 public class DetailActivity extends AppCompatActivity implements  Callback<Catalogo> {
-    private List<Entry> list_entry;
-    private String app_name;
+    private List<Entry> list_entry;     // lista de aplicaciones
+    private String app_name;            // nombre de la app que mostrara los detalles
     TextView tvTitle, tvSummary, tvPrice, tvCategory;
     ImageView imgApp;
     ProgressBar progressBar;
-    Entry app = null;
+    Entry app = null;                   // para guardar la app que corresponde a la seleccionada para mostrar detalles.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class DetailActivity extends AppCompatActivity implements  Callback<Catal
         setContentView(R.layout.activity_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        // determinar la orientacion de la actividad
         SetUpActivity.setOrientation(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -63,10 +67,16 @@ public class DetailActivity extends AppCompatActivity implements  Callback<Catal
         imgApp = (ImageView) findViewById(R.id.imgApp);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
+        // enviar peticion al servidor
         ApiService.getInstance().sendRequest(this);
+        // definir animaciones para esta actividad (para versiones >= android 21)
         SetUpActivity.setupWindowAnimation(this, Constants.DETAIL_ACTIVITY);
     }
 
+    /**
+     * Obtener los detalles de la aplicacion seleccionada
+     * @param name
+     */
     private void getDetailsApps(String name) {
         for (Entry entry : list_entry) {
             if (entry.getImName().getLabel().equals(name)) {
@@ -85,6 +95,7 @@ public class DetailActivity extends AppCompatActivity implements  Callback<Catal
         return true;
     }
 
+    // Sobreescribir la animacion cuando se ejecuta el metodo finish() solo cuando la version de android es < 21
     @Override
     public void finish() {
         super.finish();
@@ -93,6 +104,12 @@ public class DetailActivity extends AppCompatActivity implements  Callback<Catal
         }
     }
 
+
+    /**
+     * Manejar la respuesta del servidor, obtener los datos necesarios para mostrar en los detalles de la aplicacion
+     * @param call
+     * @param response
+     */
     @Override
     public void onResponse(Call<Catalogo> call, Response<Catalogo> response) {
         list_entry = response.body().getFeed().getEntry();
@@ -103,6 +120,7 @@ public class DetailActivity extends AppCompatActivity implements  Callback<Catal
             tvSummary.setText(app.getSummary().getLabel());
             tvCategory.setText(app.getCategory().getAttributes().getLabel());
 
+            // Cargar la imagen dentro del imageview usando la libreria Picasso
             Picasso.with(this).load(app.getImImage().get(2).getLabel()).into(imgApp, new com.squareup.picasso.Callback() {
                 @Override
                 public void onSuccess() {
@@ -118,6 +136,11 @@ public class DetailActivity extends AppCompatActivity implements  Callback<Catal
         }
     }
 
+    /**
+     * Usar la cache para mostrar los detalles de la aplicacion si el servidor no responde o no hay conexion a internet
+     * @param call
+     * @param t
+     */
     @Override
     public void onFailure(Call<Catalogo> call, Throwable t) {
         Log.d("onFailure", t.toString());

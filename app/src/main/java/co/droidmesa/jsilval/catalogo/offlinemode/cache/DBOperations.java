@@ -22,16 +22,18 @@ import co.droidmesa.jsilval.catalogo.models.Title;
 
 /**
  * Created by jsilval on 29/01/17.
+ * Metodos que realizan operaciones sobre la base de datos que alamcena el cache.
  */
 
 public class DBOperations {
     private DBHelper dbHelper;
 
+    // constructor de la clase, obtiene una nueva instancia de la base de datos.
     public DBOperations(Context context){
         dbHelper = new DBHelper(context);
     }
 
-    // Inseratar datos en la base de datos
+    // Inseratar datos en una tabla
     public void insertEntry(ContentValues values, String table) {
         //traer referencia a la base de datos actual con permisos de escritura (el dbHelper conoce la estructura de la bd)
         SQLiteDatabase dataBase = dbHelper.getWritableDatabase();
@@ -43,27 +45,11 @@ public class DBOperations {
         }
     }
 
-    /*
-    * Leer los datos que están dentro de una tabla
-    */
-    public ArrayList<String> getCategories(){
-        ArrayList<String> categories = new ArrayList<>();
-
-        // Traer referencia a la bd actual con permisos de lectura
-        SQLiteDatabase dataBase = dbHelper.getReadableDatabase();
-
-        // Se obtienen todos los elementos de la tabla
-        Cursor cursor = dataBase.query(DBHelper.CATEGORY_TABLE, null, null, null, null, null, null);
-
-        // Se ubica al principio del cursor y empieza la iteración sobre el cursor
-        if(cursor != null && cursor.moveToFirst()) {
-            categories.add(cursor.getString(DBHelper.C_CATEGORY_INDEX));
-            cursor.close();
-        }
-
-        return categories;
-    }
-
+    /**
+     * Hacer una consulta la tabla que almacena el cache y traerse los resultado, para luego
+     * ir creando objetos Entry, que son los que alamcenan la lista de aplicaciones disponibles
+     * @return lista de aplicaciones disponibles
+     */
     public List<Entry> getEntryFromCache(){
         List<Entry> list_entry = new ArrayList<>();
 
@@ -76,6 +62,7 @@ public class DBOperations {
         // Se ubica al principio del cursor y empieza la iteración sobre el cursor
         int i = 0;
         if(cursor != null && cursor.moveToFirst()) {
+            // ir asignando propiedades a cada objeto
             while (!cursor.isAfterLast()) {
                 Entry entry = new Entry();
                 List<ImImage> imImages = new ArrayList<>();
@@ -121,28 +108,5 @@ public class DBOperations {
         }
 
         return list_entry;
-    }
-
-    public ArrayList<String> getAppsByCategory(String category){
-        ArrayList<String> apps = new ArrayList<>();
-        String column = "entry";
-        String[] args = new String[]{category};
-
-        // Traer referencia a la bd actual con permisos de lectura (el dbHelper conoce la estructura de la bd)
-        SQLiteDatabase dataBase = dbHelper.getReadableDatabase();
-
-        // Se obtienen todos los elementos de la tabla
-        Cursor cursor = dataBase.query(DBHelper.ENTRY_TABLE, null, column + "=?", args, null, null, null);
-
-        // Se ubica al principio del cursor y empieza la iteración sobre el cursor
-        if(cursor != null && cursor.moveToFirst()) {
-            apps.add(cursor.getString(DBHelper.C_CATEGORY_INDEX));
-//            apps.add(cursor.getString(DBHelper.C_TELEFONO_INDEX));
-//            apps.add(cursor.getString(DBHelper.C_APELLIDO_INDEX));
-//            apps.add(cursor.getString(DBHelper.C_EMAIL_INDEX));
-            cursor.close();
-        }
-
-        return apps;
     }
 }

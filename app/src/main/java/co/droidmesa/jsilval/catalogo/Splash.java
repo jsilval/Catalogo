@@ -14,8 +14,7 @@ import android.widget.TextView;
 import co.droidmesa.jsilval.catalogo.utils.SetUpActivity;
 
 /**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
+ * Splash que de inicio de aplicacion
  */
 public class Splash extends AppCompatActivity {
 
@@ -66,7 +65,7 @@ public class Splash extends AppCompatActivity {
         mVisible = true;
         mContentView = findViewById(R.id.flSplash);
         initAnimation();
-        // Set up the user interaction to manually show or hide the system UI.
+
         mContentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,7 +126,7 @@ public class Splash extends AppCompatActivity {
     }
 
     /**
-     * Pasar a la sigiente actividad.
+     * Pasar a la siguiente actividad.
      */
     public void fadeTransition() {
         Intent i = new Intent(Splash.this, Categorias.class);

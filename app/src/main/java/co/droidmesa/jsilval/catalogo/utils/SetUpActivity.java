@@ -21,10 +21,16 @@ import static co.droidmesa.jsilval.catalogo.constants.Constants.*;
 
 /**
  * Created by jsilval on 1/02/17.
+ * Clase que define metodos para configurar el aspecto visual de la aplicación
  */
 
 public class SetUpActivity {
 
+    /**
+     * Determina la orientación de la pantalla segun el tipo de dispositivo
+     * @param activity actividad actual
+     * @return
+     */
     public static boolean setOrientation(Activity activity) {
         if(activity.getResources().getBoolean(R.bool.portrait_only)){
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -35,6 +41,11 @@ public class SetUpActivity {
         }
     }
 
+    /**
+     * Configura las transiciones de salida, entrada y reentrada de las actividades
+     * @param activity  actividad.
+     * @param name  nombre de la actividad.
+     */
     public static void setupWindowAnimation(Activity activity, String name) {
         switch (name) {
             case CATEGORY_ACTIVITY:
@@ -59,11 +70,11 @@ public class SetUpActivity {
                     enterTransition.setDuration(activity.getResources().getInteger(R.integer.anim_duration_very_long));
 
                     enterTransition.setInterpolator(new AnticipateOvershootInterpolator());
-                    activity.getWindow().setEnterTransition(enterTransition);
-                    activity.getWindow().setReenterTransition(enterTransition);  // When MainActivity Re-enter the Screen
-                    activity.getWindow().setExitTransition(enterTransition);     // When MainActivity Exits the Screen
+                    activity.getWindow().setEnterTransition(enterTransition);    // cuando la actividad entra
+                    activity.getWindow().setReenterTransition(enterTransition);  // cuando la actividad reentra
+                    activity.getWindow().setExitTransition(enterTransition);     // cuadno la actividad sale
 
-                    //superponer la animacion de salida de la vista categorias entrante de esta vista
+                    // no superponer la animaciones
                     activity.getWindow().setAllowEnterTransitionOverlap(false);
 
                 }
@@ -72,22 +83,26 @@ public class SetUpActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     Slide slideTransition = new Slide();
 
-                    slideTransition.setSlideEdge(Gravity.RIGHT); // Use START if using right - to - left locale
+                    slideTransition.setSlideEdge(Gravity.RIGHT);
                     slideTransition.setDuration(activity.getResources().getInteger(R.integer.anim_duration_medium));
 
-                    activity.getWindow().setEnterTransition(slideTransition);
-                    activity.getWindow().setExitTransition(slideTransition);     // When MainActivity Exits the Screen
+                    activity.getWindow().setEnterTransition(slideTransition);     // cuando la actividad entra
+                    activity.getWindow().setExitTransition(slideTransition);      // cuadno la actividad sale
 
-                    // For overlap of Re Entering Activity - MainActivity.java and Exiting TransitionActivity.java
+                    // no superponer la animaciones
                     activity.getWindow().setAllowReturnTransitionOverlap(false);
                 }
                 break;
         }
     }
 
+    /**
+     * Define una animación de escalado para algunas imagenes de las vistas
+     * @param viewToAnimate view que se desea animar.
+     */
     public static void setAnimation(View viewToAnimate) {
             ScaleAnimation anim = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-            anim.setDuration(new Random().nextInt(501));//to make duration random number between [0,501)
+            anim.setDuration(new Random().nextInt(501));// duracion aleatoria entre 0 y 501
             viewToAnimate.startAnimation(anim);
     }
 }

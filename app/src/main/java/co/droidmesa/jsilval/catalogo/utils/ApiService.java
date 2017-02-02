@@ -35,8 +35,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class ApiService {
-//    public static List<Entry> list_entry = null;
-//    private boolean isNetworkAvailable;
     private static ApiService service = null;
 
     private ApiService() {
@@ -48,10 +46,10 @@ public class ApiService {
         return service;
     }
 
-//    public boolean isNetworkAvailable() {
-//        return isNetworkAvailable;
-//    }
-
+    /**
+     * Envia petiones GET al servidor usando Retrofit 2.0
+     * @param callback
+     */
     public void sendRequest(Callback<Catalogo> callback) {
         View view = ((Activity) callback).findViewById(R.id.toolbar);
         receiveNetworkStatus((Context) callback, view);
@@ -66,6 +64,11 @@ public class ApiService {
         call.enqueue(callback);
     }
 
+    /**
+     * Crear un cache para utilizar cuando no haya conexión a internet o el servidor no responda
+     * @param list_entry
+     * @param context
+     */
     public void createCache(List<Entry> list_entry, Context context) {
         DBOperations dbOperations = new DBOperations(context);
         int i = 1;
@@ -84,6 +87,9 @@ public class ApiService {
         }
     }
 
+    /**
+     * Activar el broadcast receiver para detectar los cambios o desconexión de la red
+     */
     private void receiveNetworkStatus(Context context, final View view) {
         IntentFilter filter = new IntentFilter(NetworkChangeReceiver.NETWORK_AVAILABLE_ACTION);
         LocalBroadcastManager.getInstance(context).registerReceiver(new BroadcastReceiver() {
