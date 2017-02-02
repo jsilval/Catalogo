@@ -112,4 +112,12 @@ public class Categorias extends AppCompatActivity implements View.OnClickListene
             startActivity(i);
         }
     }
+
+    @Override
+    public void startActivity(Intent intent) {
+        super.startActivity(intent);
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+        }
+    }
 }

@@ -47,7 +47,7 @@ public class DetailActivity extends AppCompatActivity implements  Callback<Catal
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Downloading...", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -79,8 +79,18 @@ public class DetailActivity extends AppCompatActivity implements  Callback<Catal
     public boolean onSupportNavigateUp() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             finishAfterTransition();
+        } else {
+            finish();
         }
         return true;
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+        }
     }
 
     @Override
@@ -97,6 +107,7 @@ public class DetailActivity extends AppCompatActivity implements  Callback<Catal
                 @Override
                 public void onSuccess() {
                     progressBar.setVisibility(View.GONE);
+                    SetUpActivity.setAnimation(imgApp);
                 }
 
                 @Override
@@ -126,6 +137,7 @@ public class DetailActivity extends AppCompatActivity implements  Callback<Catal
                 @Override
                 public void onSuccess() {
                     progressBar.setVisibility(View.GONE);
+                    SetUpActivity.setAnimation(imgApp);
                 }
 
                 @Override
@@ -134,6 +146,7 @@ public class DetailActivity extends AppCompatActivity implements  Callback<Catal
                         @Override
                         public void onSuccess() {
                             progressBar.setVisibility(View.GONE);
+                            SetUpActivity.setAnimation(imgApp);
                         }
 
                         @Override

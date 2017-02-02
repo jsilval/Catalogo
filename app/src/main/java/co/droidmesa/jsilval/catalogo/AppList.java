@@ -63,8 +63,18 @@ public class AppList extends AppCompatActivity implements View.OnClickListener, 
     public boolean onSupportNavigateUp() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             finishAfterTransition();
+        } else {
+            finish();
         }
         return true;
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+        }
     }
 
     public void viewDetailActivity(View v) {
@@ -76,10 +86,17 @@ public class AppList extends AppCompatActivity implements View.OnClickListener, 
             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this);
             startActivity(i, options.toBundle());
         } else {
-             startActivity(i);
+            startActivity(i);
         }
     }
 
+    @Override
+    public void startActivity(Intent intent) {
+        super.startActivity(intent);
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+        }
+    }
 
     private ArrayList<Entry> getAppsInCategory(String category) {
         ArrayList<Entry> apps = new ArrayList<>();

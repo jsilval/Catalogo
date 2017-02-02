@@ -1,13 +1,12 @@
 package co.droidmesa.jsilval.catalogo.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -21,6 +20,7 @@ import java.util.Random;
 
 import co.droidmesa.jsilval.catalogo.R;
 import co.droidmesa.jsilval.catalogo.models.Entry;
+import co.droidmesa.jsilval.catalogo.utils.SetUpActivity;
 
 /**
  * Created by jsilval on 29/01/17.
@@ -30,6 +30,7 @@ public class ListAppAdapter extends RecyclerView.Adapter<ListAppAdapter.mViewHol
     private ArrayList<Entry> listItems;
     private View.OnClickListener listener;
     private Context context;
+    private int lastPosition = -1;
 
     public ListAppAdapter(ArrayList<Entry> listItems, Context context) {
         this.listItems = listItems;
@@ -48,7 +49,7 @@ public class ListAppAdapter extends RecyclerView.Adapter<ListAppAdapter.mViewHol
     @Override
     public void onBindViewHolder(ListAppAdapter.mViewHolder holder, int position) {
         Entry item = listItems.get(position);
-        holder.bindMessage(item);
+        holder.bindApp(item);
     }
 
     @Override
@@ -75,28 +76,29 @@ public class ListAppAdapter extends RecyclerView.Adapter<ListAppAdapter.mViewHol
         public mViewHolder(View itemView) {
             super(itemView);
 
-            tvTitle = (TextView)itemView.findViewById(R.id.tvTitle);
-            tvPrice = (TextView)itemView.findViewById(R.id.tvPrice);
-            imgApp = (ImageView)itemView.findViewById(R.id.imgApp);
+            tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
+            tvPrice = (TextView) itemView.findViewById(R.id.tvPrice);
+            imgApp = (ImageView) itemView.findViewById(R.id.imgApp);
             pbImgLoading = (ProgressBar) itemView.findViewById(R.id.pbImgLoading);
         }
 
-        public void bindMessage(final Entry item) {
+        public void bindApp(final Entry item) {
             tvTitle.setText(item.getImName().getLabel());
-            tvPrice.setText("Price: "+item.getImPrice().getAttributes().getAmount()+" "+item.getImPrice().getAttributes().getCurrency());
+            tvPrice.setText("Price: " + item.getImPrice().getAttributes().getAmount() + " " + item.getImPrice().getAttributes().getCurrency());
             Picasso.with(context).load(item.getImImage().get(0).getLabel()).networkPolicy(NetworkPolicy.OFFLINE).into(imgApp, new Callback() {
                 @Override
                 public void onSuccess() {
                     pbImgLoading.setVisibility(View.GONE);
+                    SetUpActivity.setAnimation(imgApp);
                 }
 
                 @Override
                 public void onError() {
-                    Log.d("ERROR", "PIN");
                     Picasso.with(context).load(item.getImImage().get(0).getLabel()).into(imgApp, new Callback() {
                         @Override
                         public void onSuccess() {
                             pbImgLoading.setVisibility(View.GONE);
+                            SetUpActivity.setAnimation(imgApp);
                         }
 
                         @Override

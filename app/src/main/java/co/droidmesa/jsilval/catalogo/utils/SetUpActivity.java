@@ -1,11 +1,18 @@
 package co.droidmesa.jsilval.catalogo.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.transition.Slide;
 import android.view.Gravity;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.AnticipateOvershootInterpolator;
+import android.view.animation.ScaleAnimation;
+
+import java.util.Random;
 
 import co.droidmesa.jsilval.catalogo.R;
 import co.droidmesa.jsilval.catalogo.constants.Constants;
@@ -76,5 +83,11 @@ public class SetUpActivity {
                 }
                 break;
         }
+    }
+
+    public static void setAnimation(View viewToAnimate) {
+            ScaleAnimation anim = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            anim.setDuration(new Random().nextInt(501));//to make duration random number between [0,501)
+            viewToAnimate.startAnimation(anim);
     }
 }
